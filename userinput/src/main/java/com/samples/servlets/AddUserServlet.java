@@ -8,12 +8,20 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/adduserServlet")
+@WebServlet(
+	urlPatterns="/adduserServlet",
+	initParams = {
+			@WebInitParam(name="dburl", value="jdbc:mysql://localhost/mydb"),
+			@WebInitParam(name="dbuser", value="root"),
+			@WebInitParam(name="dbpassword", value="1234")
+	}
+) 
 public class AddUserServlet extends HttpServlet {
 
 	Connection connection;
@@ -23,7 +31,7 @@ public class AddUserServlet extends HttpServlet {
 
 		try {
 			System.out.println("AddUserSevlet.init() method. DB connection created");
-			Class.forName("com.mysql.cj.jdbc.Driver");
+			Class.forName("com.mysql.jdbc.Driver");
 			connection = DriverManager.getConnection("jdbc:mysql://localhost/mydb", "root", "1234");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

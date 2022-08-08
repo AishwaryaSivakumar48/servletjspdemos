@@ -8,24 +8,25 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/readuserServlet")
 public class ReadUsersServlet extends HttpServlet {
 
 	Connection connection;
 
 	@Override
-	public void init() throws ServletException {
+	public void init(ServletConfig config) throws ServletException {
 
 		try {
-			System.out.println("AddUserSevlet.init() method. DB connection created");
+			System.out.println("ReadUserSevlet.init() method. DB connection created");
 			Class.forName("com.mysql.jdbc.Driver");
-			connection = DriverManager.getConnection("jdbc:mysql://localhost/mydb", "root", "admin");
+			connection = DriverManager.getConnection(config.getInitParameter("dburl"),
+					config.getInitParameter("dbuser"), config.getInitParameter("dbpassword"));
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -65,7 +66,7 @@ public class ReadUsersServlet extends HttpServlet {
 		}
 
 	}
-	
+
 	@Override
 	public void destroy() {
 		try {
